@@ -811,26 +811,8 @@ void Vehicle::RemovePendingEventsForPassenger(Unit* passenger)
 
 bool VehicleJoinEvent::Execute(uint64, uint32)
 {
-    std::cout << "[INFO][entities.vehicle] VehicleJoinEvent::Execute: Passenger="
-        << Passenger->GetGUID().ToString()
-        << ", PassengerType=" << Passenger->GetTypeId()
-        << ", IsInWorld=" << Passenger->IsInWorld()
-        << ", IsAlive=" << Passenger->IsAlive()
-        << ", Target=" << (Target ? Target->GetBase()->GetGUID().ToString() : "null") << '\n';
-
-    if (!Passenger->IsInWorld())
-    {
-        std::cout << "[INFO][entities.vehicle] VehicleJoinEvent::Execute: Passenger not in world, aborting" << '\n';
-        Abort(0);
-        return true;
-    }
-
-    if (!Target || !Target->GetBase()->IsInWorld())
-    {
-        std::cout << "[INFO][entities.vehicle] VehicleJoinEvent::Execute: Target not in world, aborting" << '\n';
-        Abort(0);
-        return true;
-    }
+    ASSERT(Passenger->IsInWorld());
+    ASSERT(Target && Target->GetBase()->IsInWorld());
 
     Unit::AuraEffectList const& vehicleAuras = Target->GetBase()->GetAuraEffectsByType(SPELL_AURA_CONTROL_VEHICLE);
     auto itr = std::find_if(vehicleAuras.begin(), vehicleAuras.end(), [this](AuraEffect const* aurEff) -> bool

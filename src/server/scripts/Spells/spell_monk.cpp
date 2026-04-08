@@ -2296,23 +2296,25 @@ class spell_monk_mana_tea : public SpellScript
     SpellModifier* mod = nullptr;
     void HandleBeforeCast()
     {
-        if (Player* _player = GetCaster()->ToPlayer())
+        //Need Rework
+
+        /*if (Player* _player = GetCaster()->ToPlayer())
         {
             int32 stacks = 0;
             if (Aura* manaTeaStacks = _player->GetAura(SPELL_MONK_MANA_TEA_STACKS))
             {
                 stacks = manaTeaStacks->GetStackAmount();
                 int32 newDuration = stacks * IN_MILLISECONDS;
-                SpellModifierByClassMask* mod = new SpellModifierByClassMask(manaTeaStacks);
+                SpellPctModifierByClassMask* mod = new SpellPctModifierByClassMask(manaTeaStacks);
                 mod->op = SpellModOp::Duration;
                 mod->type = SPELLMOD_FLAT;
                 mod->spellId = SPELL_MONK_MANA_TEA_REGEN;
-                static_cast<SpellModifierByClassMask*>(mod)->value = newDuration;
+                static_cast<SpellPctModifierByClassMask*>(mod)->value = newDuration;
                 mod->mask[1] = 0x200000;
                 mod->mask[2] = 0x1;
                 _player->AddSpellMod(mod, true);
             }
-        }
+        }*/
     }
 
     void HandleAfterCast()

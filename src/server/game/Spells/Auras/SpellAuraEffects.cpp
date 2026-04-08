@@ -3350,14 +3350,11 @@ void AuraEffect::HandleAuraControlVehicle(AuraApplication const* aurApp, uint8 m
         return;
 
     Unit* target = aurApp->GetTarget();
+    if (!target->IsVehicle())
+        return;
 
     Unit* caster = GetCaster();
     if (!caster || caster == target)
-        return;
-
-    std::cout << "HandleAuraControlVehicle: caster= " << caster->GetGUID().ToString() << "casterType = " << caster->GetTypeId() << "target = " << target->GetGUID().ToString() << "targetIsVehicle = " << target->IsVehicle() << "apply = " << apply << "amount = " << GetAmount();
-
-    if (!target->IsVehicle())
         return;
 
     if (apply)
@@ -3367,8 +3364,6 @@ void AuraEffect::HandleAuraControlVehicle(AuraApplication const* aurApp, uint8 m
         // so this break such spells or most of them.
         // Current formula about m_amount: effect base points + dieside - 1
         // TO DO: Reasearch more about 0/0 and fix it.
-        std::cout << std::format("[INFO][entities.vehicle] HandleAuraControlVehicle: calling _EnterVehicle, caster={}, seatId={}\n",
-            caster->GetGUID().ToString(), GetAmount() - 1);
         caster->_EnterVehicle(target->GetVehicleKit(), GetAmount() - 1, aurApp);
     }
     else
