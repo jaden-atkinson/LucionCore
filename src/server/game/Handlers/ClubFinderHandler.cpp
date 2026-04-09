@@ -16,7 +16,7 @@
  */
 
 #include "WorldSession.h"
-#include "ClubFinderMgr.h"CMSG_CLUB_FINDER_POST
+#include "ClubFinderMgr.h"
 #include "ClubFinderPackets.h"
 #include "GameTime.h"
 #include "Guild.h"
