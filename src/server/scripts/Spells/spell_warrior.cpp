@@ -414,7 +414,7 @@ class spell_warr_bloodsurge : public AuraScript
         Cell::VisitAllObjects(caster, worker, 50.0f);
 
         SpellEffectValue chance = std::sqrt(rends) * aurEff->GetAmount();
-        if (!roll_chance_f(chance))
+        if (!roll_chance(chance))
             return;
 
         caster->CastSpell(caster, SPELL_WARRIOR_BLOODSURGE_ENERGIZE, CastSpellExtraArgsInit{
@@ -774,7 +774,7 @@ class spell_warr_devastator : public AuraScript
     {
         if (GetTarget()->GetSpellHistory()->HasCooldown(SPELL_WARRIOR_SHIELD_SLAM))
         {
-            if (roll_chance_f(GetEffectInfo(EFFECT_1).CalcValue()))
+            if (roll_chance(GetEffectInfo(EFFECT_1).CalcValue()))
             {
                 GetTarget()->GetSpellHistory()->ResetCooldown(SPELL_WARRIOR_SHIELD_SLAM, true);
                 GetTarget()->CastSpell(GetTarget(), SPELL_WARRIOR_SHIELD_SLAM_MARKER, TRIGGERED_IGNORE_CAST_IN_PROGRESS);
@@ -835,7 +835,7 @@ class spell_warr_enrage_proc : public AuraScript
             }
         }
 
-        return roll_chance_f(aurEff->GetAmount());
+        return roll_chance(aurEff->GetAmount());
     }
 
     void HandleProc(ProcEventInfo const& eventInfo)
@@ -1781,7 +1781,7 @@ class spell_warr_raging_blow_cooldown_reset : public SpellScript
         if (AuraEffect const* auraEffect = caster->GetAuraEffect(SPELL_WARRIOR_WRATH_AND_FURY, EFFECT_0))
             value += auraEffect->GetAmount();
 
-        if (roll_chance_f(value))
+        if (roll_chance(value))
         {
             caster->CastSpell(nullptr, SPELL_WARRIOR_ALWAYS_ANGRY, CastSpellExtraArgsInit{
                 .TriggerFlags = TRIGGERED_IGNORE_CAST_IN_PROGRESS | TRIGGERED_DONT_REPORT_CAST_ERROR,
@@ -2012,7 +2012,7 @@ class spell_warr_strategist : public AuraScript
 
     static bool CheckProc(AuraScript const&, AuraEffect const* aurEff, ProcEventInfo const& /*procEvent*/)
     {
-        return roll_chance_f(aurEff->GetAmount());
+        return roll_chance(aurEff->GetAmount());
     }
 
     void HandleCooldown(AuraEffect const* /*aurEff*/, ProcEventInfo const& /*procEvent*/) const
@@ -2139,7 +2139,7 @@ class spell_warr_tactician : public AuraScript
         if (!procSpell->CalcPowerCost(POWER_RAGE, false, eventInfo.GetActor(), SpellSchoolMask(procSpell->SchoolMask)))
             return false;
 
-        return roll_chance_f(aurEff->GetAmount());
+        return roll_chance(aurEff->GetAmount());
     }
 
     static void HandleProc(AuraScript const&, AuraEffect const* aurEff, ProcEventInfo const& eventInfo)
@@ -2222,7 +2222,7 @@ class spell_warr_thunder_blast_aura : public AuraScript
 
     static bool CheckProc(AuraScript const&, AuraEffect const* aurEff, ProcEventInfo const& /*eventInfo*/)
     {
-        return roll_chance_f(aurEff->GetAmount());
+        return roll_chance(aurEff->GetAmount());
     }
 
     void HandleProc(AuraEffect const* /*aurEff*/, ProcEventInfo const& /*eventInfo*/) const
@@ -2389,7 +2389,7 @@ class spell_warr_unbridled_ferocity : public AuraScript
 
     bool CheckProc(ProcEventInfo& /*eventInfo*/) const
     {
-        return roll_chance_f(GetEffect(EFFECT_0)->GetAmount());
+        return roll_chance(GetEffect(EFFECT_0)->GetAmount());
     }
 
     void Register() override
