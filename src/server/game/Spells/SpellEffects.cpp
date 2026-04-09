@@ -6244,7 +6244,7 @@ void Spell::EffectModifyCooldowns()
         flag128 reqFlag;
         reqFlag[bitIndex / 32] = 1u << (bitIndex % 32);
         return bool(spellOnCooldown->SpellFamilyFlags & reqFlag);
-    }, Milliseconds(GetEffectValueAsInt());
+    }, Milliseconds(GetEffectValueAsInt()));
 }
 
 void Spell::EffectModifyCooldownsByCategory()
@@ -6645,7 +6645,7 @@ void Spell::EffectModReputation()
 
     Player* player = unitTarget->ToPlayer();
 
-    int32  repChange = damage;
+    int32  repChange = GetEffectValueAsInt();
 
     uint32 factionId = effectInfo->MiscValue;
 
@@ -6679,7 +6679,7 @@ void Spell::EffectIncreaseSkill()
     if (!unitTarget->IsPlayer())
         return;
 
-    if (damage < 0)
+    if (effectValue < 0)
         return;
 
     uint32 skillid = effectInfo->MiscValue;
