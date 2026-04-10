@@ -1973,7 +1973,7 @@ public:
             if (Unit* caster = GetCaster())
                 if (GetTarget())
                     // 25% to give 1 chi per tick
-                    if (roll_chance_i(25))
+                    if (roll_chance(25))
                         caster->CastSpell(caster, SPELL_MONK_SOOTHING_MIST_ENERGIZE, true);
         }
 

@@ -4005,7 +4005,7 @@ class spell_dh_shear_proc : public AuraScript
         }
 
         if (caster->GetSpellHistory()->HasCooldown(SPELL_DH_FELBLADE))
-            if (roll_chance_i(caster->GetAuraEffectAmount(SPELL_DH_SHEAR_PROC, EFFECT_3)))
+            if (roll_chance(caster->GetAuraEffectAmount(SPELL_DH_SHEAR_PROC, EFFECT_3)))
                 caster->GetSpellHistory()->ResetCooldown(SPELL_DH_FELBLADE);
     }
 
@@ -4052,7 +4052,7 @@ class spell_dh_darkness_absorb : public AuraScript
             return;
 
         int32 chance = GetSpellInfo()->GetEffect(EFFECT_1).BasePoints + caster->GetAuraEffectAmount(SPELL_DH_COVER_OF_DARKNESS, EFFECT_0);
-        if (roll_chance_i(chance))
+        if (roll_chance(chance))
             absorbAmount = dmgInfo.GetDamage();
     }
 
@@ -4440,7 +4440,7 @@ class spell_demon_hunter_chaos_strike : public SpellScript
 
         // Chaos Strike and Annihilation have a mainhand and an offhand spell, but the crit chance should be the same.
         float criticalChances = caster->GetUnitCriticalChanceAgainst(BASE_ATTACK, target);
-        caster->VariableStorage.Set("Spells.ChaosStrikeCrit", roll_chance_f(criticalChances));
+        caster->VariableStorage.Set("Spells.ChaosStrikeCrit", roll_chance(criticalChances));
         caster->CastSpell(nullptr, SPELL_DH_CHAOS_STRIKE_ENERGIZE, true);
     }
 
@@ -4730,7 +4730,7 @@ class spell_dh_annihilation : public SpellScript
 
             SetHitDamage(damage + attackPower);
 
-            if (roll_chance_f(20))
+            if (roll_chance(20))
                 caster->ModifyPower(POWER_FURY, +20);
         }
     }

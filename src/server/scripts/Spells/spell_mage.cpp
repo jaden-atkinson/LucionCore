@@ -2677,7 +2677,7 @@ class spell_mage_flamestrike : public SpellScript
 
             if (caster->HasAura(SPELL_MAGE_PYROMANIAC))
                 if (AuraEffect* pyromaniacEff0 = caster->GetAuraEffect(SPELL_MAGE_PYROMANIAC, EFFECT_0))
-                    if (roll_chance_i(pyromaniacEff0->GetAmount()))
+                    if (roll_chance(pyromaniacEff0->GetAmount()))
                     {
                         if (caster->HasAura(SPELL_MAGE_HEATING_UP))
                             caster->RemoveAurasDueToSpell(SPELL_MAGE_HEATING_UP);

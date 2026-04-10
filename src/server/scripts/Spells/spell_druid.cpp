@@ -3254,7 +3254,7 @@ class spell_dru_lunar_strike : public SpellScript
                 moonfireDOT->SetDuration(newDuration);
             }
 
-        if (GetCaster() && roll_chance_f(20) && GetCaster()->HasAura(SPELL_DRUID_ECLIPSE_LUNAR_AURA))
+        if (GetCaster() && roll_chance(20) && GetCaster()->HasAura(SPELL_DRUID_ECLIPSE_LUNAR_AURA))
             GetCaster()->CastSpell(nullptr, SPELL_DRUID_SOLAR_EMPOWEREMENT, true);
     }
 
@@ -3305,7 +3305,7 @@ class spell_dru_solar_wrath : public SpellScript
 
                     sunfireDOT->SetDuration(newDuration);
                 }
-        if (GetCaster() && roll_chance_f(20) && GetCaster()->HasAura(SPELL_DRUID_ECLIPSE_SOLAR_AURA))
+        if (GetCaster() && roll_chance(20) && GetCaster()->HasAura(SPELL_DRUID_ECLIPSE_SOLAR_AURA))
             GetCaster()->CastSpell(nullptr, SPELL_DRUID_LUNAR_EMPOWEREMENT, true);
     }
 

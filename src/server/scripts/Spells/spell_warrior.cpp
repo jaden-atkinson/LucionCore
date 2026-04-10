@@ -464,7 +464,7 @@ class spell_warr_bloodthirst : public SpellScript
             SetHitHeal(heal);
 
         if (caster->HasAura(SPELL_WARRIOR_FRESH_MEAT))
-            if (roll_chance_f(15))
+            if (roll_chance(15))
                 caster->CastSpell(nullptr, SPELL_WARRIOR_ENRAGE_AURA, true);
 
         if (caster->HasAura(SPELL_WARRIOR_THIRST_FOR_BATTLE))
@@ -2968,7 +2968,7 @@ class spell_warr_whirlwind : public SpellScript
             caster->RemoveAura(SPELL_WARRIOR_WRECKING_BALL_EFFECT);
 
         if (caster->HasAura(SPELL_WARRIOR_MEAT_CLEAVER))
-            if (roll_chance_f(10))
+            if (roll_chance(10))
                 caster->CastSpell(nullptr, SPELL_WARRIOR_ENRAGE_AURA, true);
 
         if (caster->HasAura(SPELL_WARRIOR_THIRST_FOR_BATTLE))

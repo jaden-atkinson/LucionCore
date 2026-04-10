@@ -1230,7 +1230,7 @@ class spell_evo_scintillation : public AuraScript
         if (!target)
             return;
 
-        if (!roll_chance_i(GetEffect(EFFECT_1)->GetAmount()))
+        if (!roll_chance(GetEffect(EFFECT_1)->GetAmount()))
             return;
 
         caster->CastSpell(caster, SPELL_EVOKER_ETERNITY_SURGE_VISUAL,
@@ -1375,7 +1375,7 @@ class spell_evo_deep_breath : public SpellScript
             return;
         WorldLocation dest = *destPtr;
 
-        // Fly to destination — hackfixes 362010's JUMP_CHARGE (effect 254)
+        // Fly to destination ? hackfixes 362010's JUMP_CHARGE (effect 254)
         constexpr float Speed = 19.0f;
         float distance = caster->GetExactDist2d(dest.GetPositionX(), dest.GetPositionY());
         Milliseconds travelMs{ uint32((distance / Speed) * 1000.0f) };

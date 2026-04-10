@@ -2329,7 +2329,7 @@ class spell_hunter_wildfire_infusion_dummy : public AuraScript
     {
         if (GetTarget()->HasAura(SPELL_WILDFIRE_INFUSION_OVERRIDE_1))
         {
-            if (roll_chance_i(50))
+            if (roll_chance(50))
                 GetTarget()->CastSpell(GetTarget(), SPELL_WILDFIRE_INFUSION_OVERRIDE_2, true);
             else
                 GetTarget()->CastSpell(GetTarget(), SPELL_WILDFIRE_INFUSION_OVERRIDE_3, true);
@@ -2337,7 +2337,7 @@ class spell_hunter_wildfire_infusion_dummy : public AuraScript
         }
         else if (GetTarget()->HasAura(SPELL_WILDFIRE_INFUSION_OVERRIDE_2))
         {
-            if (roll_chance_i(50))
+            if (roll_chance(50))
                 GetTarget()->CastSpell(GetTarget(), SPELL_WILDFIRE_INFUSION_OVERRIDE_1, true);
             else
                 GetTarget()->CastSpell(GetTarget(), SPELL_WILDFIRE_INFUSION_OVERRIDE_3, true);
@@ -2345,7 +2345,7 @@ class spell_hunter_wildfire_infusion_dummy : public AuraScript
         }
         else if (GetTarget()->HasAura(SPELL_WILDFIRE_INFUSION_OVERRIDE_3))
         {
-            if (roll_chance_i(50))
+            if (roll_chance(50))
                 GetTarget()->CastSpell(GetTarget(), SPELL_WILDFIRE_INFUSION_OVERRIDE_1, true);
             else
                 GetTarget()->CastSpell(GetTarget(), SPELL_WILDFIRE_INFUSION_OVERRIDE_2, true);
