@@ -226,6 +226,8 @@ void WorldSession::HandleClubFinderGetApplicantsList(WorldPackets::ClubFinder::G
 {
     TC_LOG_DEBUG("clubfinder", "CMSG_CLUB_FINDER_GET_APPLICANTS_LIST [{}]", GetPlayerInfo());
 
+    (void)packet; // Suppress unused parameter warning
+
     Player* player = GetPlayer();
     if (!player)
         return;
