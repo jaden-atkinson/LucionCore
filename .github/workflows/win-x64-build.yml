@@ -80,6 +80,13 @@ jobs:
       run: |
         cmake --build ${{ steps.strings.outputs.build-output-dir }}
 
+    - name: Upload build.ninja on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ninja-build-file
+        path: ${{ steps.strings.outputs.build-output-dir }}/build.ninja
+
     - name: Copy Dependencies
       run: |
         cd ${{ steps.strings.outputs.build-output-dir }}/bin/${{ env.CMAKE_BUILD_TYPE }}
