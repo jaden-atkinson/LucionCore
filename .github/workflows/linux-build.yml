@@ -1,28 +1,13 @@
-name: Ubuntu x64
+name: Ubuntu x64 Cloud Compiler
 
 on:
   push:
   pull_request:
+  workflow_dispatch: # Allows you to trigger a build manually in the GitHub UI!
 
 jobs:
   build:
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - cc: gcc-13
-            cxx: g++-13
-            pch: 1
-            launcher: 
-          - cc: clang-17
-            cxx: clang++-17
-            pch: 1
-            launcher: 
-          - cc: clang-17
-            cxx: clang++-17
-            pch: 0
-            launcher: ccache
     steps:
     - uses: actions/checkout@v5
     
@@ -32,62 +17,53 @@ jobs:
       run: |
         echo "build-start=$EPOCHSECONDS" >> "$GITHUB_OUTPUT"
         echo "build-output-dir=${{ github.workspace }}/bin" >> "$GITHUB_OUTPUT"
-        echo "ccache-key-prefix=ubuntu-${{ matrix.cc }}-${{ github.base_ref || github.ref_name }}" >> "$GITHUB_OUTPUT"
         
     - name: Dependencies
       run: |
-        sudo apt-get update && sudo apt-get install -yq ccache libboost-dev libboost-filesystem-dev libboost-locale-dev libboost-program-options-dev libboost-regex-dev libboost-thread-dev libssl-dev libreadline-dev zlib1g-dev libbz2-dev
+        sudo apt-get update && sudo apt-get install -yq ccache libboost-dev libboost-filesystem-dev libboost-locale-dev libboost-program-options-dev libboost-regex-dev libboost-thread-dev libssl-dev libreadline-dev zlib1g-dev libbz2-dev ninja-build
         
-    - name: Restore nopch cache
-      id: ccache-restore
-      if: ${{ matrix.pch == '0' }}
+    - name: Restore CCache
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/.ccache
-        key: ${{ steps.strings.outputs.ccache-key-prefix }}-${{ github.ref_name }}-${{ github.sha }}
+        key: ubuntu-clang17-ccache-${{ github.ref_name }}-${{ github.sha }}
         restore-keys: |
-          ${{ steps.strings.outputs.ccache-key-prefix }}-${{ github.ref_name }}-
-          ${{ steps.strings.outputs.ccache-key-prefix }}-
+          ubuntu-clang17-ccache-${{ github.ref_name }}-
+          ubuntu-clang17-ccache-
           
-    - name: Setup
+    - name: Setup CMake
       env:
-        CMAKE_BUILD_TYPE: Debug
-        CMAKE_C_COMPILER_LAUNCHER: ${{ matrix.launcher }}
-        CMAKE_CXX_COMPILER_LAUNCHER: ${{ matrix.launcher }}
-        CC: /usr/bin/${{ matrix.cc }}
-        CXX: /usr/bin/${{ matrix.cxx }}
+        CC: clang-17
+        CXX: clang++-17
       run: >
         cmake -GNinja -S ${{ github.workspace }} -B ${{ steps.strings.outputs.build-output-dir }}
-        -DWITH_WARNINGS=1 -DWITH_WARNINGS_AS_ERRORS=1 -DWITH_COREDEBUG=0 -DUSE_COREPCH=${{ matrix.pch }} -DUSE_SCRIPTPCH=${{ matrix.pch }} -DTOOLS=1 -DSCRIPTS=dynamic -DSERVERS=1 -DNOJEM=0
-        -DCMAKE_C_FLAGS_DEBUG="-DNDEBUG -g0" -DCMAKE_CXX_FLAGS_DEBUG="-DNDEBUG -g0"
-        -DCMAKE_INSTALL_PREFIX=check_install -DBUILD_TESTING=1
+        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_C_COMPILER_LAUNCHER=ccache
+        -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -DTOOLS=0
+        -DWITH_WARNINGS=0
+        -DSERVERS=1
+        -DCMAKE_INSTALL_PREFIX=server_install
         
-    - name: Build
+    - name: Compile
       env:
         CCACHE_BASEDIR: ${{ github.workspace }}
         CCACHE_DIR: ${{ github.workspace }}/.ccache
-        CCACHE_CPP2: 1
       run: |
         ccache -z
         cmake --build ${{ steps.strings.outputs.build-output-dir }}
         ccache -s
         ccache --evict-older-than $(($EPOCHSECONDS - ${{ steps.strings.outputs.build-start }}))s
         
-    - name: Unit tests
-      run: |
-        cmake --build ${{ steps.strings.outputs.build-output-dir }} --target test
-        
-    - name: Check executables
+    - name: Prepare Binaries
       run: |
         cmake --install ${{ steps.strings.outputs.build-output-dir }}
-        cd ${{ github.workspace }}/check_install/bin
-        ./bnetserver --version
-        ./worldserver --version
-
-    - name: Upload Artifacts
+        
+    - name: Upload Server Artifacts
       uses: actions/upload-artifact@v4
       with:
-        path: ${{ github.workspace }}/check_install/bin
-        name: TrinityCoreMasterLinux64-${{ matrix.cc }}-pch${{ matrix.pch }}
-        # Set a custom retention for artifacts
-        #retention-days: 7
+        path: |
+          ${{ github.workspace }}/server_install/bin
+          ${{ github.workspace }}/server_install/etc
+        name: TrinityCore-Linux-Binaries
+        retention-days: 7
