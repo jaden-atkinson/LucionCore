@@ -5913,7 +5913,7 @@ class spell_dh_emptiness_buff : public AuraScript
 {
     float _appliedHaste = 0.0f;
 
-    void HandleCalcAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& canBeRecalculated)
+    void HandleCalcAmount(AuraEffect const* /*aurEff*/, SpellEffectValue& amount, bool& canBeRecalculated)
     {
         amount = 0;
         canBeRecalculated = false;
@@ -6024,8 +6024,6 @@ class spell_dh_spontaneous_immolation : public AuraScript
 // 1241937 - Soul Immolation: periodic dummy spawns soul fragments + grants Fury each tick
 class spell_dh_soul_immolation : public AuraScript
 {
-    PrepareAuraScript(spell_dh_soul_immolation);
-
     bool Validate(SpellInfo const* /*spellInfo*/) override
     {
         return ValidateSpellInfo({ SPELL_DH_CONSUME_SOUL_SPAWN, SPELL_DH_SOUL_IMMOLATION_FURY });
